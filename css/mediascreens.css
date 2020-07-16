@@ -1,0 +1,22 @@
+
+@media screen and (max-width: 1024px) {
+	#section-big-register {
+		display: none !important;
+	}
+
+	#section-login {
+		display: none !important;
+	}
+	
+	#section-small-login {
+		display: inline !important;
+	}
+
+}
+
+
+@media only screen and (min-width : 1025px) {
+    #section-small-login {
+		display: none !important;
+	}
+}
