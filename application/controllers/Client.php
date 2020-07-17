@@ -46,7 +46,7 @@ class Client extends CI_Controller {
 		{
 				
 				$bdate = (int)$this->input->post('month') . "-" . (int)$this->input->post('day'). "-" . (int)$this->input->post('year');
-				echo $bdate; die();
+				// echo $bdate; die();
 				$fullname = $this->input->post('lname') . ", " . $this->input->post('fname');
 				$token = md5(date('Y-m-d H:i:s').$fullname);
 				$this->Client_model->register_short($bdate,$token);
