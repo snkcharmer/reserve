@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="<?=base_url()?>dist/css/adminlte.min.css">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
 </head>
 <body class="hold-transition login-page">
 <div class="login-box">
@@ -119,7 +120,15 @@
 
 <script>
 
-	$(document).ready(function () {
+	$(document).ready(function (e) {
+		// e.preventDefault();
+		let url = "<?= base_url() ?>";
+		let token = localStorage.getItem("token");
+
+		if(token){
+			window.location.replace(url+"admin/dashboard");
+		}
+
 		$("#login-form").submit(function (e) {
 			e.preventDefault();
 			if ($("#input-username").val() === ""){
@@ -133,7 +142,6 @@
 			}
 
 			if ($("#input-username").val() !== "" && $("#input-password").val() !== ""){
-				let url = "<?= base_url() ?>";
 				$.ajax({
 					type: "POST",
 					url: url+"admin/userlogin",
@@ -142,13 +150,12 @@
 						password: $("#input-password").val()
 					},
 					success: function (res){
-						console.log(res);
 						if(res === "failed"){
 							alert("Ops! The username and password you've entered is not registered...");
 						}else{
+							localStorage.token = $("#input-username").val();
 							window.location.replace(url+"admin/dashboard");
 						}
-
 
 					}
 				});

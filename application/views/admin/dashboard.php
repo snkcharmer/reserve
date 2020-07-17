@@ -15,6 +15,11 @@
   <link rel="stylesheet" href="<?=base_url()?>dist/css/adminlte.min.css">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+	<script>
+		function preventBack() { window.history.forward(); }
+		setTimeout("preventBack()", 0);
+		window.onunload = function () { null };
+	</script>
 </head>
 <body class="hold-transition sidebar-mini">
 <!-- Site wrapper -->
@@ -126,6 +131,7 @@
 <script src="<?=base_url()?>dist/js/adminlte.min.js"></script>
 <script src="<?=base_url()?>js/moment.js"></script>
 <script>
+
 function bulls(prnumber,tblid,ctr)
 {
 	viewState = $('#viewState' + ctr).val();
