@@ -110,6 +110,5 @@
 			return $query;
 		}
 		
-		
 	}
 ?>

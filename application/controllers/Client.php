@@ -46,17 +46,25 @@ class Client extends CI_Controller {
 		{
 				
 				$bdate = (int)$this->input->post('month') . "-" . (int)$this->input->post('day'). "-" . (int)$this->input->post('year');
-				
+				echo $bdate; die();
 				$fullname = $this->input->post('lname') . ", " . $this->input->post('fname');
 				$token = md5(date('Y-m-d H:i:s').$fullname);
 				$this->Client_model->register_short($bdate,$token);
-				$resid = $this->db->insert_id();
+				$idnum = $this->db->insert_id();
 				$eadd = $this->input->post('eadd');
 				$this->session->set_flashdata("emailsent","1");
-				$this->Client_model->sendEmailRegistration( $eadd, $token, $resid );
+				$this->Client_model->sendEmailRegistration( $eadd, $token, $idnum );
 				$this->email->send(FALSE);
 				redirect('client/dashboard');
 		}
+	}
+	
+	public function resendEmail(){
+		$token = $this->input->post('sesstoken');
+		$eadd = $this->input->post('sesseadd');
+		$idnum = $this->input->post('sessidnum');
+		$this->Client_model->sendEmailRegistration( $eadd, $token, $idnum );
+		$this->email->send(FALSE);
 	}
 	
 	public function check_valid_date($str)
@@ -91,19 +99,39 @@ class Client extends CI_Controller {
 		
 		if ($result != FALSE ) 
 		{
-			$data = array(
-				'eadd' => $result['eadd'],
-				'id' => $result["idnum"],
-				'fullname' => $result['lname'] . ", " . $result['fname'],
-				'nmp_logged' => TRUE,
-			);
+			if ($result["email_confirmed"] == 1) {
 				
-			$this->session->set_userdata($data);
+				$data = array(
+					'eadd' => $result['eadd'],
+					'id' => $result["idnum"],
+					'fullname' => $result['lname'] . ", " . $result['fname'],
+					'nmp_logged' => TRUE,
+				);
+					
+				$this->session->set_userdata($data);
 
-			redirect("client/dashboard");
+				redirect("client/dashboard");
+			} else {
+				
+				$error = array(
+						"error" => 1,
+						"details" => "Please check your email to confirm your account.",
+						"sessemail" => $result['eadd'],
+						"sesstoken" => $result['conf_token'],
+						"sessidnum" => $result['idnum']
+						);
+				$this->session->set_flashdata($error);
+				redirect("client/index");
+				
+			}
 			
 		} else {
-			$this->session->set_flashdata("errorLogin","Username and password does not match.");
+			// $this->session->set_flashdata("errorLogin","Username and password does not match.");
+			$error = array(
+						"error" => 2,
+						"details" => "Username and password does not match."
+						);
+			$this->session->set_flashdata($error);
 			redirect("client/index");
 		}
 	}

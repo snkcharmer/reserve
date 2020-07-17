@@ -29,7 +29,7 @@
 		
 		public function validate_login($eadd, $passworld){
 			
-			$this->db->where("eadd",$eadd);
+			$this->db->select("eadd,idnum,lname,fname,email_confirmed,passworld,conf_token");
 			$this->db->where("eadd",$eadd);
 			$query = $this->db->get("trainee");
 			// print_r($this->db->last_query()); die();
@@ -206,7 +206,7 @@
 				die();
 		}
 		
-		function sendEmailRegistration($to_email, $token, $resid)
+		function sendEmailRegistration($to_email, $token, $idnum)
 		{
 				$this->load->library('email');
 				$mail_config = $this->emailConfig();
@@ -220,7 +220,7 @@
 				$this->email->subject("NMP Email confirmation");
 				$this->email->message("Welcome to <b> NMP Online Registration </b>
 				
-				Thank you for registering in our website. To login and proceed to enrollment, please confirm your email by clicking this link: <b><a href='http://reserve.nmp.gov.ph/confirm/registration?token=" . $token . "&rand=" . $resid ."'>Confirm your Account</a></b>.
+				Thank you for registering in our website. To log in and proceed with your enrollment, please confirm your email by clicking this link: <b><a href='http://reserve.nmp.gov.ph/confirm/registration?token=" . $token . "&rand=" . $idnum ."'>Confirm your Account</a></b>.
 				
 				<br><br>
 				If you have some question or clarification, just visit our office at<b> Barangay Cabalawan Tacloban City</b> or you can contact us through

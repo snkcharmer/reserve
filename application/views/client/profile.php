@@ -273,7 +273,7 @@
 					<fieldset>
 						<h2> Step 2: Highest Educational Attainment</h2>
 						<hr>
-						<h3 style="font-size: 15px;">NOTE: If the course name and school name are not listed in the select field. Please click <b>add course or add school button</b> to add.</h3>
+						<h3 style="font-size: 15px;"></h3>
 						<div class="row">
 							<div class="col-lg-10">    
 								<div class="form-group">

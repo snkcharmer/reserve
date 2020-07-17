@@ -149,7 +149,7 @@
 					<div class="card-header">
 						<h3 class="card-title">Your Enrollment Activity</h3>
 					</div>
-					<div class="card-body p-0">
+					<div class="card-body p-0 table-responsive">
 
 						<table class="table table-striped" id="table-enrollment-activity" style="text-align:center">
 							<thead>
@@ -194,7 +194,7 @@
 										<td style="text-align:center"><?=$activity["dateReserve"]?></td>
 										<td style="text-align:center">
 											<?php if ($activity["profile"] == 0) {?>
-											<a href="<?=base_url()?>client/profile/<?=$activity["conf_token"]?>/<?=$activity["resid"]?>" class="get-resid" style="color:#dc3545;"><i class="nav-icon fas fa-times "></i> Not Updated</a></td>
+											<a href="<?=base_url()?>client/profile/<?=$activity["conf_token"]?>/<?=$activity["resid"]?>" class="" style="color:#dc3545;"><i class="nav-icon fas fa-times "></i> Not Updated</a></td>
 											<?php } else {  ?>
 											<a href="<?=base_url()?>client/profile/<?=$activity["conf_token"]?>/<?=$activity["resid"]?>" class="get-resid" style="color:#28a745;"><i class="nav-icon fas fa-check "></i> Updated</a></td>
 											<?php }  ?>

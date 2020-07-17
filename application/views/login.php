@@ -26,8 +26,14 @@
   <script src="<?php echo base_url()?>plugins/select2/js/select2.full.min.js"></script>
   <script src="<?php echo base_url()?>plugins/sweetalert2/sweetalert2.min.js"></script>
 
-  <script src="<?php echo base_url()?>js/reserve.js"></script>
-  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <!-- <script src="https://www.google.com/recaptcha/api.js" async defer></script>-->
+  <script type="text/javascript">
+      var onloadCallback = function() {
+        grecaptcha.render('g-recaptcha', {
+          'sitekey' : '6Lcegq8ZAAAAAJ1NBRjiSPN9erll1AJ_ySXSRWvl'
+        });
+      };
+    </script>
 </head>
 	
 <script>
@@ -40,7 +46,7 @@
 <body class="hold-transition">
 
 <?php $this->load->view("menu/navbar-login"); ?>
-	
+
 <section class="content" id="section-small-login">
 	<section class="content-header">
 	</section>
@@ -81,23 +87,33 @@
 						<div class="row">
 						  <div class="col-sm-12 col-xs-12">
 							
-							<button type="submit" class="btn btn-danger btn-block" id="btn-login-small">Login</button>
+							<button type="submit" class="btn btn-success btn-block" id="btn-login-small">Login</button>
 						  </div>
 						  <!-- /.col -->
 						</div>
 					</div>
 					<?php echo form_close(); ?>
 				</div>
+				<div class="row" style="padding-left: 15px">
+					<span class="text-danger" style="font-size: 80%">
+						<?php 
+							$err = $this->session->flashdata("details");
+							echo  (empty($err) ? "" : $err . "&nbsp;&nbsp;") ?> 
+					</span>
+					<a href=""  style="font-size:13px; color:#fff"> Forgot Password? </a>	
+				</div>
 			</div>
 		</div>
 	</div>
 </section>
-	
+
  <section class="content">
 	<section class="content-header">
 	</section>
+
     <div class="container">
         <div class="row" style="margin-top:10px">
+			
 			<div class="col-lg-5">
 				<div class="card-box">
 					<div class="register-logo"  id="section-big-register">
@@ -111,7 +127,7 @@
 				<div class="card card-primary card-outline">
 
 					  <div class="card-header">
-						<h3 class="card-title">Register</h3>
+						<h3 class="card-title">Ahoy! Register an account to get started.</h3>
 					  </div>
 							<div class="card-body register-card-body">
 								
@@ -236,7 +252,7 @@
 								  </div>
 								</div>
 								<div class="input-group mb-3">
-								  <div class="g-recaptcha" data-sitekey="6Lcegq8ZAAAAAJ1NBRjiSPN9erll1AJ_ySXSRWvl"></div>
+								  <div id="g-recaptcha"></div>
 								</div>
 								<div class="row">
 								  <div class="col-8 form-group mb-0">
@@ -349,8 +365,51 @@ $(document).ready(function () {
 				  'success'
 				);
 		<?php } ?>
+	<?php
+		$error = $this->session->flashdata("error");
+		$token = $this->session->flashdata('sesstoken');
+		$eadd = $this->session->flashdata('sessemail');
+		$idnum = $this->session->flashdata('sessidnum');
+		if  ($error == 1) { ?>
+				Swal.fire({
+					  title: 'Email not confirmed',
+					  text: "Resend verification code?",
+					  icon: 'warning',
+					  showCancelButton: true,
+					  confirmButtonColor: '#3085d6',
+					  cancelButtonColor: '#d33',
+					  confirmButtonText: 'Yes'
+					}).then((result) => {
+					  if (result.value) {
+
+						  $.ajax({
+							  
+							   url:"<?php echo base_url()?>client/resendEmail/",
+							   method:"post",
+							   dataType:"json",
+							   data:{ sesseadd: "<?=$eadd?>", sessidnum: "<?=$idnum?>", sesstoken: "<?=$token?>" },
+							   success:function(data)
+							   {
+									
+									Swal.fire(
+									  'Email verification sent!',
+									  'Please check your email to verify registration.',
+									  'success'
+									);
+							   }
+							});
+							
+						
+					  }
+					})
+			  
+		<?php } ?>
 
 });
 </script>
+
+<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"
+        async defer>
+    </script>
 </body>
 </html>

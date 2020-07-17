@@ -32,7 +32,7 @@
 				<div class="row" style="padding-left: 15px">
 					<span class="text-danger" style="font-size: 80%">
 						<?php 
-							$err = $this->session->flashdata("errorLogin");
+							$err = $this->session->flashdata("details");
 							echo  (empty($err) ? "" : $err . "&nbsp;&nbsp;") ?> 
 					</span>
 					<a href=""  style="font-size:13px; color:#fff"> Forgot Password? </a>	
