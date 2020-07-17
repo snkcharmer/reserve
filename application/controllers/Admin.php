@@ -7,7 +7,7 @@ class Admin extends CI_Controller {
 	{
 		parent:: __construct();
 		$this->load->library("pagination");
-		$this->load->model(array('Schedule_model','Applicant_model'));
+		$this->load->model(array('Schedule_model','Applicant_model', 'Login_model'));
 		$this->load->library('table');
 		$this->load->helper('url');
 	}
@@ -19,7 +19,12 @@ class Admin extends CI_Controller {
 	
 	public function userlogin()
 	{
-		redirect('admin/dashboard');
+		$data['data'] = $this->Login_model->admin_login()->result_array();
+		if ($data['data'] == NULL){
+			echo json_encode("failed");
+		}else{
+			echo json_encode("success");
+		}
 	}
 	
 	public function dashboard()

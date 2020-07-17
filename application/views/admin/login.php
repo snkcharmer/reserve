@@ -73,27 +73,28 @@
 				}?>
 		</p>
 
-      <form action="<?=base_url()?>admin/userlogin" method="post">
+      <form onsubmit="" id="login-form">
         <div class="input-group mb-3">
-          <input type="text" class="form-control" placeholder="Username">
+          <input type="text" class="form-control" placeholder="Username" id="input-username" >
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-user"></span>
             </div>
           </div>
         </div>
+		  <span style="color: red" id="error-username"></span>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Password">
+          <input type="password" class="form-control" placeholder="Password" id="input-password" >
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
             </div>
           </div>
         </div>
+		  <span style="color: red" id="error-password"></span>
         <div class="row">
           <div class="col-8">
             <div class="icheck-primary">
-
             </div>
           </div>
           <!-- /.col -->
@@ -116,5 +117,44 @@
 <!-- AdminLTE App -->
 <script src="<?=base_url()?>dist/js/adminlte.min.js"></script>
 
+<script>
+
+	$(document).ready(function () {
+		$("#login-form").submit(function (e) {
+			e.preventDefault();
+			if ($("#input-username").val() === ""){
+				$("#error-username").text("Username field is required");
+				$("#input-username").css("border", "1px solid red");
+			}
+
+			if ($("#input-password").val() === ""){
+				$("#error-password").text("Password field is required");
+				$("#input-password").css("border", "1px solid red");
+			}
+
+			if ($("#input-username").val() !== "" && $("#input-password").val() !== ""){
+				let url = "<?= base_url() ?>";
+				$.ajax({
+					type: "POST",
+					url: url+"admin/userlogin",
+					data: {
+						username: $("#input-username").val(),
+						password: $("#input-password").val()
+					},
+					success: function (res){
+						console.log(res);
+						if(res === "failed"){
+							alert("Ops! The username and password you've entered is not registered...");
+						}else{
+							window.location.replace(url+"admin/dashboard");
+						}
+
+
+					}
+				});
+			}
+		});
+	});
+</script>
 </body>
 </html>
